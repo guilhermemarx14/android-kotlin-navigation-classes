@@ -49,13 +49,23 @@
             app:titleMarginStart="8dp"
             app:titleTextColor="#FFFFFF" />
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_navigation_menu" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/menu_header"
         android:layout_gravity="start"
-        app:menu="@menu/drawer_menu" />
+        app:headerLayout="@layout/menu_header"
+        app:menu="@menu/drawer_menu"
+        tools:visibility="visible" />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.jokenpo.databinding.ActivitySecondBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -17,6 +18,7 @@ class SecondActivity : AppCompatActivity() {
     private lateinit var drawer: DrawerLayout
     private lateinit var binding: ActivitySecondBinding
     private lateinit var navDrawer: NavigationView
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +32,15 @@ class SecondActivity : AppCompatActivity() {
 
     }
 
+
+
     private fun configureBinding() {
         binding = ActivitySecondBinding.inflate(layoutInflater)
         drawer = binding.root
         setContentView(drawer)
 
         navDrawer = binding.navigationView
+        bottomNav = binding.bottomNav
     }
 
     private fun configureListeners() {
@@ -54,6 +59,23 @@ class SecondActivity : AppCompatActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+
+        bottomNav.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.bottom_option_1 -> {
+                    Snackbar.make(this, drawer, getString(R.string.bottom_title_1), Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.bottom_option_2 -> {
+                    Snackbar.make(this, drawer, getString(R.string.bottom_title_2), Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                else -> {
+                    Snackbar.make(this,drawer, getString(R.string.something_went_wrong),Snackbar.LENGTH_SHORT).show()
+                    false
+                }
             }
         }
     }

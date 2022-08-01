@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jokenpo</string>
+    <string name="app_name">Jokenpo_class</string>
     <string name="button_title">Go To Second Activity</string>
     <string name="sample">This is the Second Activity</string>
     <string name="go_back_button">Go Back</string>
@@ -12,4 +12,6 @@
     <string name="title_drawer">My drawer</string>
     <string name="home_text">Home</string>
     <string name="image_content_description">Some description</string>
+    <string name="bottom_title_1">Option 1</string>
+    <string name="bottom_title_2">Option 2</string>
 </resources>
