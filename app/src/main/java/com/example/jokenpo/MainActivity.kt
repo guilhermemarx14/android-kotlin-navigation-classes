@@ -1,51 +1,123 @@
 package com.example.jokenpo
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.view.Menu
+import android.view.MenuItem
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.jokenpo.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var drawer: DrawerLayout
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navDrawer: NavigationView
+    private lateinit var bottomNav: BottomNavigationView
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val toolbar = binding.toolbar2
 
-        val toolbar = binding.toolbar
+        setContentView(binding.root)
         setSupportActionBar(toolbar)
 
-        supportActionBar?.title = getString(R.string.minha_app_bar)
-        supportActionBar?.setLogo(R.drawable.ic_logo)
-        supportActionBar?.setDisplayUseLogoEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        drawer = binding.root
+        navDrawer = binding.navigationView
+        bottomNav = binding.bottomNav
 
-        val secondActivityIntent = Intent(this, SecondActivity::class.java)
-        secondActivityIntent.putExtra("name", "Guilherme")
-        secondActivityIntent.putExtra("age", 26)
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHostFragment.navController
 
-        val activityResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val intent = result.data
-                    if (intent?.hasExtra("result") == true)
-                        Snackbar.make(binding.root, intent.getStringExtra("result") ?: "Error", Snackbar.LENGTH_SHORT).show()
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.playerFragment,R.id.resultFragment), drawer)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navDrawer.setupWithNavController(navController)
+
+        configureListeners()
+
+    }
+
+
+
+
+    private fun configureListeners() {
+        /*navDrawer.setNavigationItemSelectedListener { menuItem ->
+            drawer.closeDrawers()
+            when (menuItem.itemId) {
+                R.id.drawer_home -> {
+                    onBackPressed()
+                    true
+                }
+                else -> false
+            }
+        }*/
+
+        bottomNav.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.bottom_option_1 -> {
+                    Snackbar.make(this, drawer, getString(R.string.bottom_title_1), Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.bottom_option_2 -> {
+                    Snackbar.make(this, drawer, getString(R.string.bottom_title_2), Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                else -> {
+                    Snackbar.make(this,drawer, getString(R.string.something_went_wrong),Snackbar.LENGTH_SHORT).show()
+                    false
                 }
             }
-
-        binding.goToSecondActivityButton.setOnClickListener {
-            activityResult.launch(secondActivityIntent)
         }
-
-
     }
+
+    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.second_activity_menu, menu)
+        return true
+    }*/
+
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_save -> {
+                Snackbar.make(this, drawer, getString(R.string.menu_save), Snackbar.LENGTH_SHORT)
+                    .show()
+                true
+            }
+            R.id.menu_settings -> {
+                Snackbar.make(
+                    this,
+                    drawer,
+                    getString(R.string.menu_settings),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                true
+            }
+            else -> {
+                Snackbar.make(
+                    this,
+                    drawer,
+                    getString(R.string.something_went_wrong),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                false
+            }
+        }
+    }*/
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        drawer.openDrawer(GravityCompat.START)
         return true
     }
+
 }
