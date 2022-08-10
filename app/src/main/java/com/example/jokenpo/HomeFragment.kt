@@ -1,6 +1,7 @@
 package com.example.jokenpo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +24,14 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeFragmentToGameNav()
             findNavController().navigate(action)
         }
+        lifecycle.addObserver(CustomObserver())
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("LifeCycle", "Owner - onResume")
     }
 
 
